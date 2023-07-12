@@ -83,7 +83,7 @@ AppAsset::register($this);
     </div>
 </div>
 
-<footer class="footer bg-dark text-white">
+<footer class="footer bg-white text-white">
     
 </footer>
 
