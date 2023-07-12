@@ -4,20 +4,19 @@ use yii\helpers\Html;
 use yii\widgets\DetailView;
 
 /* @var $this yii\web\View */
-/* @var $model common\models\Order */
+/* @var $model common\models\Product */
 
-$this->title = 'Order #' . $model->id . ' details';
-$this->params['breadcrumbs'][] = ['label' => 'Orders', 'url' => ['index']];
+$this->title = $model->name;
+$this->params['breadcrumbs'][] = ['label' => 'Products', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
-
-$orderAddress = $model->orderAddress;
 ?>
-<div class="order-view">
+<div class="product-view">
 
-    <h1><?= Html::encode($this->title) ?></h1>
+    <h3><?= Html::encode($this->title) ?></h3>
 
     <p>
+        <?= Html::a('Update', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
         <?= Html::a('Delete', ['delete', 'id' => $model->id], [
             'class' => 'btn btn-danger',
             'data' => [
@@ -31,54 +30,31 @@ $orderAddress = $model->orderAddress;
         'model' => $model,
         'attributes' => [
             'id',
-            'total_price:currency',
-            'status:orderStatus',
-            'firstname',
-            'lastname',
-            'email:email',
-            'transaction_id',
-            'paypal_order_id',
+            [
+                'attribute' => 'image',
+                'format' => ['html'],
+                'value' => fn() => Html::img($model->getImageUrl(), ['style' => 'width: 50px']),
+            ],
+            [
+                'attribute' => 'name',
+                'options' => [
+                    'style' => 'white-space: normal'
+                ]
+            ],
+            'description:html',
+            'price:currency',
+            [
+                'attribute' => 'status',
+                'format' => 'html',
+                'value' => fn() => Html::tag('span', $model->status ? 'Active' : 'Draft', [
+                    'class' => $model->status ? 'badge badge-success' : 'badge badge-danger'
+                ]),
+            ],
             'created_at:datetime',
+            'updated_at:datetime',
+            'createdBy.username',
+            'updatedBy.username',
         ],
     ]) ?>
-
-    <h4>Address</h4>
-    <?= DetailView::widget([
-        'model' => $orderAddress,
-        'attributes' => [
-            'address',
-            'city',
-            'state',
-            'country',
-            'zipcode',
-        ],
-    ]) ?>
-
-    <h4>Order Items</h4>
-    <table class="table table-sm">
-        <thead>
-        <tr>
-            <th>Image</th>
-            <th>Name</th>
-            <th>Quantity</th>
-            <th>Unit Price</th>
-            <th>Total Price</th>
-        </tr>
-        </thead>
-        <tbody>
-        <?php foreach ($model->orderItems as $item): ?>
-            <tr>
-                <td>
-                    <img src="<?php echo $item->product ? $item->product->getImageUrl() : \common\models\Product::formatImageUrl(null) ?>"
-                         style="width: 50px;">
-                </td>
-                <td><?php echo $item->product_name ?></td>
-                <td><?php echo $item->quantity ?></td>
-                <td><?php echo Yii::$app->formatter->asCurrency($item->unit_price) ?></td>
-                <td><?php echo Yii::$app->formatter->asCurrency($item->quantity * $item->unit_price) ?></td>
-            </tr>
-        <?php endforeach; ?>
-        </tbody>
-    </table>
 
 </div>
