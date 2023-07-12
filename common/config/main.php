@@ -13,7 +13,7 @@ return [
         ],
         'formatter' => [
             'class' => \common\i18n\Formatter::class,
-            'datetimeFormat' => 'php:d/m/Y H:i',
+            'currencyCode' => 'USD',
         ]
     ],
 ];
