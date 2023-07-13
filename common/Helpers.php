@@ -17,5 +17,11 @@ function currUserId()
 
 function param($key)
 {
-    return Yii::$app->params[$key];
+    if (isset($myArray['paypalClientId'])) {
+        // Truy cập vào phần tử "paypalClientId" ở đây
+        return Yii::$app->params[$key];
+    } else {
+        // Xử lý trường hợp phần tử "paypalClientId" không được định nghĩa
+        return null;
+    }
 }
