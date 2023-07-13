@@ -39,13 +39,29 @@ AppAsset::register($this);
         ],
     ]);
     
+    
     $menuItems = [
         [
             'label' => 'Cart <span id="cart-quantity" class="badge badge-danger">' . $cartItemCount . '</span>',
             'url' => ['/cart/index'],
             'encode' => false
         ],
+        [
+            'label' => 'About',
+            'url' => ['/site/about'],
+            'encode' => false
+        ],
+        [
+            'label' => 'Contact',
+            'url' => ['/site/contact'],
+        ],
+        [
+            'label' => 'Product',
+            'url' => ['/site/product'],
+        ],
+        
     ];
+
     if (Yii::$app->user->isGuest) {
         $menuItems[] = ['label' => 'Signup', 'url' => ['/site/signup']];
         $menuItems[] = ['label' => 'Login', 'url' => ['/site/login']];

@@ -232,4 +232,14 @@ class SiteController extends \frontend\base\Controller
             'model' => $model
         ]);
     }
+
+    public function actionAbout() {
+
+        return $this->render('about');
+    }
+
+    public function actionContact() {
+
+        return $this->render('contact');
+    }
 }
