@@ -53,7 +53,7 @@ class CartController extends \frontend\base\Controller
 
     public function actionIndex()
     {
-        $cartItems = CartItem::getItemsForUser(Yii::$app->user->id);
+        $cartItems = CartItem::getItemsForUser(currUserId());
 
         return $this->render('index', [
             'items' => $cartItems
@@ -167,9 +167,9 @@ class CartController extends \frontend\base\Controller
 
     public function actionCheckout()
     {
-        $cartItems = CartItem::getItemsForUser(Yii::$app->user->id);
-        $productQuantity = CartItem::getTotalQuantityForUser(Yii::$app->user->id);
-        $totalPrice = CartItem::getTotalPriceForUser(Yii::$app->user->id);
+        $cartItems = CartItem::getItemsForUser(currUserId());
+        $productQuantity = CartItem::getTotalQuantityForUser(currUserId());
+        $totalPrice = CartItem::getTotalPriceForUser(currUserId());
 
         if (empty($cartItems)) {
             return $this->redirect([Yii::$app->homeUrl]);
@@ -179,7 +179,7 @@ class CartController extends \frontend\base\Controller
         $order->total_price = $totalPrice;
         $order->status = Order::STATUS_DRAFT;
         $order->created_at = time();
-        $order->created_by = Yii::$app->user->id;
+        $order->created_by = currUserId();
         $transaction = Yii::$app->db->beginTransaction();
         if ($order->load(Yii::$app->request->post())
             && $order->save()
@@ -195,7 +195,7 @@ class CartController extends \frontend\base\Controller
         }
 
         $orderAddress = new OrderAddress();
-        if (!(Yii::$app->user->isGuest)) {
+        if (!isGuest()) {
             /** @var \common\models\User $user */
             $user = Yii::$app->user->identity;
             $userAddress = $user->getAddress();
@@ -254,7 +254,7 @@ class CartController extends \frontend\base\Controller
                 }
             }
             if ($paidAmount === (float)$order->total_price && $response->result->status === 'COMPLETED') {
-                $order->status = Order::STATUS_COMPLETED;
+                $order->status = Order::STATUS_PAID;
             }
             $order->transaction_id = $response->result->purchase_units[0]->payments->captures[0]->id;
             if  ($order->save()) {
@@ -278,4 +278,38 @@ class CartController extends \frontend\base\Controller
 
         // todo Validate the transaction ID. It must not be used and it must be valid transaction ID in paypal.
     }
+
+    public function actionOrder()
+{
+    $order = new Order();
+    $orderAddress = new OrderAddress();
+
+    $cartItems = Yii::$app->cart->getItems();
+    $productQuantity = Yii::$app->cart->getCount();
+    $totalPrice = Yii::$app->cart->getCost();
+
+    if ($order->load(Yii::$app->request->post()) && $orderAddress->load(Yii::$app->request->post())) {
+        if ($order->validate() && $orderAddress->validate()) {
+            $order->total_price = $totalPrice;
+            $order->created_by = Yii::$app->user->id;
+            if ($order->save()) {
+                $orderAddress->order_id = $order->id;
+                if ($orderAddress->save()) {
+                    // Clear cart after successful checkout
+                    Yii::$app->cart->removeAll();
+
+                    return $this->render('order-success', ['orderId' => $order->id]);
+                }
+            }
+        }
+    }
+
+    return $this->render('checkout', [
+        'order' => $order,
+        'orderAddress' => $orderAddress,
+        'cartItems' => $cartItems,
+        'productQuantity' => $productQuantity,
+        'totalPrice' => $totalPrice,
+    ]);
+}
 }
