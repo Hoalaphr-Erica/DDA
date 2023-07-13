@@ -41,10 +41,19 @@ AppAsset::register($this);
     
     $menuItems = [
         [
+            'label' => 'Shop Categories',
+            'url' => ['/site/Categories'],
+        ],
+        [
             'label' => 'Cart <span id="cart-quantity" class="badge badge-danger">' . $cartItemCount . '</span>',
             'url' => ['/cart/index'],
             'encode' => false
         ],
+        [
+            'label' => 'A',
+            'url' => ['/cart/order'],
+        ],
+        
     ];
     if (Yii::$app->user->isGuest) {
         $menuItems[] = ['label' => 'Signup', 'url' => ['/site/signup']];

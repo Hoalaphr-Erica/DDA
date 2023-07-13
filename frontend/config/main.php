@@ -46,8 +46,10 @@ return [
         ],
         'assetManager' => [
             'appendTimestamp' => true
-        ]
-
+        ],
+        'cart' => [
+            'class' => 'frontend\models\Cart',
+        ],
     ],
     'params' => $params,
 ];
