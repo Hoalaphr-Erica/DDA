@@ -63,6 +63,10 @@ AppAsset::register($this);
 
     
     $menuItems = [
+        [
+            'label' => 'Home',
+            'url' => ['/site/index']
+        ],
         ['label' => 'Contact', 'url' => ['/site/contact']],
         [
             'label' => 'Cart <span id="cart-quantity" class="badge badge-danger">' . $cartItemCount . '</span>',

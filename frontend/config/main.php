@@ -8,7 +8,7 @@ $params = array_merge(
 
 return [
     'id' => 'app-frontend',
-    'name' => 'Yii2 Book-3D',
+    'name' => 'Yii2 E-commerce',
     'basePath' => dirname(__DIR__),
     'bootstrap' => ['log'],
     'controllerNamespace' => 'frontend\controllers',
@@ -45,7 +45,10 @@ return [
             ],
         ],
         'assetManager' => [
-            'appendTimestamp' => true
+            'appendTimestamp' => true,
+            'bundles' => [
+                \yii\bootstrap4\BootstrapAsset::class => false
+            ]
         ]
 
     ],

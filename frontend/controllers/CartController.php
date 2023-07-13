@@ -278,4 +278,17 @@ class CartController extends \frontend\base\Controller
 
         // todo Validate the transaction ID. It must not be used and it must be valid transaction ID in paypal.
     }
+
+    public function actionView($id)
+{
+    $order = Order::find()->with('orderItems')->where(['id' => $id])->one();
+
+    if (!$order) {
+        throw new NotFoundHttpException('The requested page does not exist.');
+    }
+
+    return $this->render('view', [
+        'order' => $order,
+    ]);
+}
 }
