@@ -12,12 +12,40 @@ $this->title = 'Login';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="site-login">
-    <div class="row justify-content-center">
-        <div class="col-lg-5">
-            <h1><?= Html::encode($this->title) ?></h1>
 
-            <p>Please fill out the following fields to login:</p>
+    <section class="banner-area organic-breadcrumb">
+		<div class="container">
+			<div class="breadcrumb-banner d-flex flex-wrap align-items-center justify-content-end">
+				<div class="col-first">
+					<h1>Login/Register</h1>
+					<nav class="d-flex align-items-center">
+						<a href="index.html">Home<span class="lnr lnr-arrow-right"></span></a>
+						<a href="category.html">Login/Register</a>
+					</nav>
+				</div>
+			</div>
+		</div>
+	</section>
+	<!-- End Banner Area -->
 
+    
+    <section class="login_box_area section_gap">
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-6">
+				<div class="login_box_img">
+					<img class="img-fluid" src="/img/login.jpg" alt="">
+					<div class="hover">
+					<h4>New to our website?</h4>
+					<p>There are advances being made in science and technology everyday, and a good example of this is the</p>
+					<a class="primary-btn" href="registration.html">Create an Account</a>
+				</div>
+			</div>
+		</div>
+    <div class="col-lg-6">
+		<div class="login_form_inner">
+			<h3>Log in to enter</h3>
+            
             <?php $form = ActiveForm::begin(['id' => 'login-form']); ?>
 
             <?= $form->field($model, 'username')->textInput(['autofocus' => true]) ?>
@@ -39,4 +67,5 @@ $this->params['breadcrumbs'][] = $this->title;
             <?php ActiveForm::end(); ?>
         </div>
     </div>
+</section>
 </div>

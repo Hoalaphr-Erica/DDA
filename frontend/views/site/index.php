@@ -9,6 +9,7 @@ $this->title = 'Book 3D';
 
     <div class="body-content">
 
+
         <?php echo \yii\widgets\ListView::widget([
             'dataProvider' => $dataProvider,
             'layout' => '{summary}<div class="row">{items}</div>{pager}',
